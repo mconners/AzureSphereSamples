@@ -111,7 +111,7 @@ static void ButtonTimerEventHandler(EventData *eventData)
 			OLED_SetVerticalScrollProperties(SCROLL_VERTICAL_LEFT, 3, 6, SCROLL_PER_25_FRAMES, 1);
 			OLED_ActivateScroll();
 
-			OLED_DeactivateScroll();
+			//OLED_DeactivateScroll();
 			blinkIntervalIndex = (blinkIntervalIndex + 1) % numBlinkIntervals;
             if (SetTimerFdToPeriod(blinkingLedTimerFd, &blinkIntervals[blinkIntervalIndex]) != 0) {
                 terminationRequired = true;
@@ -156,9 +156,9 @@ static int InitPeripheralsAndHandlers(void)
     }
 
     // Open LED GPIO, set as output with value GPIO_Value_High (off), and set up a timer to poll it
-    Log_Debug("Opening MT3620_RDB_LED1_RED.\n");
+    Log_Debug("Opening MT3620_RDB_LED1_RED.\n(not really, opening MT3620_GPIO0)\n");
     blinkingLedGpioFd =
-        GPIO_OpenAsOutput(MT3620_RDB_LED1_RED, GPIO_OutputMode_PushPull, GPIO_Value_High);
+        GPIO_OpenAsOutput(MT3620_GPIO0, GPIO_OutputMode_PushPull, GPIO_Value_High);
     if (blinkingLedGpioFd < 0) {
         Log_Debug("ERROR: Could not open LED GPIO: %s (%d).\n", strerror(errno), errno);
         return -1;
@@ -170,10 +170,11 @@ static int InitPeripheralsAndHandlers(void)
     }
 
 
-	i2cFd = I2CMaster_Open(MT3620_I2C_ISU0);
+	i2cFd = I2CMaster_Open(MT3620_I2C_ISU2);
 	if (i2cFd < 0) {
 		return -1;
 	}
+	I2CMaster_SetBusSpeed(i2cFd,I2C_BUS_SPEED_HIGH );
 
 	OLED_Init(i2cFd, true);
 	OLED_SetTextPos(0,3);

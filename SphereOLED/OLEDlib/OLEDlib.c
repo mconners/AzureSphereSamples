@@ -64,6 +64,8 @@ static const uint8_t oledResetSeq[] = {
 	0x80,
 	SSD1308_CMD_BRIGHTNESS, //contrast control
 	0x50, 
+	SSD1306_CHARGEPUMP,
+	0x14,
 	SSD1308_CMD_SET_PRECHARGE, //set pre-charge period
 	0x21,
 	SSD1308_SET_ADDRESS_MODE, //Set Memory Addressing Mode
@@ -88,7 +90,8 @@ ssize_t oled_sendBuffer(const uint8_t *data, size_t length)
 	{
 		return -1;
 	}
-	return I2CMaster_Write(oledI2CFd, oledI2CAddr, data, length);
+	ssize_t foo = I2CMaster_Write(oledI2CFd, oledI2CAddr, data, length);
+	return foo;
 }
 
 ///<summary>Sends a command with parameter over I2C to the SSD1308</summary>

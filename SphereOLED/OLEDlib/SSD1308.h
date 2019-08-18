@@ -101,6 +101,8 @@
 #define SSD1308_CMD_SCROLL_DEACTIVATE	((uint8_t)0x2EU)
 #define SSD1308_CMD_BRIGHTNESS			((uint8_t)0x81U)
 
+#define SSD1306_CHARGEPUMP			((uint8_t)0x8DU)
+
 ///<summary>Set Display clock divider (default 0x80)</summary>
 #define SSD1308_CMD_SET_DISP_CLOCK_DIV	((uint8_t)0xD5U)
 
